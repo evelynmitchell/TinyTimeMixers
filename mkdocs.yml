@@ -1,0 +1,76 @@
+site_name: Package Docs
+plugins:
+  - glightbox
+  - search
+copyright: "&copy; Evelyn Mitchell"
+extra_css:
+  - docs/assets/css/extra.css
+theme:
+    name: material
+    custom_dir: docs/overrides
+    palette:
+      # Palette toggle for light mode
+    - scheme: default
+      primary: 'custom'
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: 'custom'
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    features:
+        - content.code.copy
+        - content.code.annotate
+        - navigation.tabs
+        - navigation.sections
+        - navigation.expand
+        - navigation.top
+        - announce.dismiss
+    font:
+      text: Roboto
+      code: Roboto Mono
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - admonition
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed
+  - tables
+  - def_list
+  - footnotes
+
+
+nav:
+- Home:
+    - Overview: "index.md"
+    - Contributing: "contributing.md"
+    - FAQ: "faq.md"
+    - Purpose: "purpose.md"
+    - Roadmap: "roadmap.md"
+    - Design: "design.md"
+    - Flywheel: "flywheel.md"
+    - Bounties: "bounties.md"
+    - Metric: "metric.md"
+    - Distribution: "distribution"
+    - Research: "research.md"
+    - Demos: "demos.md"
+    - Architecture: "architecture.md"
+    - Checklist: "checklist.md"
+    - Hiring: "hiring.md"
+- Examples:
+    - Overview: "examples/index.md"
+
+    
