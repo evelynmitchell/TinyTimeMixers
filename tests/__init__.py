@@ -1,3 +1,3 @@
-""" Tiny Time Mixers tests ""
+""" Tiny Time Mixers tests """
 
 from tinytimemixers import TinyTimeMixers
