@@ -1,6 +1,6 @@
 """ Tests for the main module. """
-import pytest
-from main import TinyTimeMixers
+
+from tinttimemixers import TinyTimeMixers
 
 def test_tiny_time_mixers_initialization():
     ttm = TinyTimeMixers()
