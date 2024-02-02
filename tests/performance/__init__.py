@@ -1,1 +1,1 @@
-""" performance tests for the package """
+""" performance tests for the Tiny Time Mixers """
