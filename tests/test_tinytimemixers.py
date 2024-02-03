@@ -1,6 +1,7 @@
 """ Tests for the main module. """
 
 from tinytimemixers import TinyTimeMixers
+import pytest
 
 def test_tiny_time_mixers_initialization():
     """ Test the TinyTimeMixers class initialization. """
