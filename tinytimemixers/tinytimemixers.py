@@ -1,5 +1,6 @@
 """ TinyTimeMixers main module. """
 
+
 class TinyTimeMixers:
     """ TinyTimeMixers class. """
 
