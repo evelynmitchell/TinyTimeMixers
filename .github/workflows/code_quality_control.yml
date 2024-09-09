@@ -21,10 +21,26 @@ jobs:
       - name: Install dependencies
         run: pip install --no-cache-dir -r requirements.txt
 
+      - name: Install autopep8
+        run: pip install --upgrade autopep8
+      
+      - name: Install black
+        run: pip install black pre-commit
+
       - name: Find Python files
         run: find . -name "*.py" -type f -exec autopep8 --in-place --aggressive --aggressive {} +
 
       - name: Push changes
         uses: ad-m/github-push-action@master
+        with: name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Auto-format Python code" || echo "No changes to commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
