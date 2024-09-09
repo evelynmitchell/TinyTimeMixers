@@ -29,10 +29,8 @@ jobs:
 
       - name: Find Python files
         run: find . -name "*.py" -type f -exec autopep8 --in-place --aggressive --aggressive {} +
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with: name: Commit changes
+  
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
