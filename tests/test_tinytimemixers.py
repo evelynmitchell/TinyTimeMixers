@@ -1,6 +1,6 @@
 """ Tests for the main module. """
 
-from tinytimemixers import TinyTimeMixers
+import tinytimemixers
 import pytest
 
 
