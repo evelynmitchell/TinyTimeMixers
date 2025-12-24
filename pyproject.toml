@@ -3,32 +3,66 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "paper"
-version = "0.0.1"
-description = "Paper - Pytorch"
+name = "tinytimemixers"
+version = "0.1.0"
+description = "TinyTimeMixers - Lightweight Time Series Foundation Model"
 license = "MIT"
-authors = ["Evelyn Mitchell <efmphone@gmail.com"]
-homepage = "https://github.com/evelynmmitchell/paper"
-documentation = "https://github.com/evelynmitchell/paper"  # Add this if you have documentation.
-readme = "README.md"  # Assuming you have a README.md
-repository = "https://github.com/evelynmitchell/paper"
-keywords = ["artificial intelligence", "deep learning", "optimizers", "Prompt Engineering"]
+authors = ["Evelyn Mitchell <efmphone@gmail.com>"]
+homepage = "https://github.com/evelynmitchell/TinyTimeMixers"
+documentation = "https://github.com/evelynmitchell/TinyTimeMixers"
+readme = "README.md"
+repository = "https://github.com/evelynmitchell/TinyTimeMixers"
+keywords = [
+    "artificial intelligence",
+    "deep learning",
+    "time series",
+    "forecasting",
+    "foundation model",
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.10"
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pytest = "*"
-
+torch = "^2.1.0"
+numpy = "^1.26.0"
+einops = "^0.7.0"
+tqdm = "^4.66.0"
 
 [tool.poetry.dev-dependencies]
-# Add development dependencies here
+pre-commit = "^4.0.0"
+pytest = "^8.0.0"
+pytest-cov = "^4.1.0"
 
+[tool.poetry.extras]
+data = ["pandas", "datasets", "gluonts"]
+benchmark = ["tabpfn-time-series", "scipy"]
+
+[dependency-groups]
+dev = ["pre-commit>=4.0.0", "ruff>=0.14.0", "ty>=0.0.1a1", "zizmor>=1.0.0"]
+core = [
+    "torch>=2.1.0",
+    "numpy>=1.26.0",
+    "einops>=0.7.0",
+    "tqdm>=4.66.0",
+]
+data = [
+    "pandas>=2.1.0",
+    "datasets>=2.16.0",
+    "gluonts>=0.14.0",
+]
+benchmark = [
+    "tabpfn-time-series>=1.0.0",
+    "scipy>=1.11.0",
+]
 
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.14.0"
@@ -42,16 +76,24 @@ mypy-protobuf = "^4.0.0"
 
 [tool.autopep8]
 max_line_length = 80
-ignore = "E501,W6"  # or ["E501", "W6"]
+ignore = "E501,W6"
 in-place = true
 recursive = true
 aggressive = 3
 
 
 [tool.ruff]
-line-length = 70
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
 
 [tool.black]
-line-length = 70
-target-version = ['py38']
-preview = true
+line-length = 88
+target-version = ['py310', 'py311', 'py312']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --tb=short"

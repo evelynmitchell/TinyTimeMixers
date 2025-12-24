@@ -1,18 +1,30 @@
 repos:
-  - repo: https://github.com/ambv/black
-    rev: 22.3.0
-    hooks:
-    - id: black
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.255'
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
     hooks:
       - id: ruff
         args: [--fix]
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.6.3
+      - id: ruff-format
+  # TODO: Enable ty after configuring it for PyTorch
+  # - repo: local
+  #   hooks:
+  #     - id: ty
+  #       name: ty type checker
+  #       entry: uv run ty check
+  #       language: system
+  #       types: [python]
+  #       pass_filenames: false
+  - repo: https://github.com/woodruffw/zizmor-pre-commit
+    rev: v1.0.0
     hooks:
-    - id: nbqa-black
-      additional_dependencies: [ipython==8.12, black]
-    - id: nbqa-ruff 
-      args: ["--ignore=I001"]
-      additional_dependencies: [ipython==8.12, ruff]
+      - id: zizmor
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+    - id: nbqa-ruff
+      args: ["--ignore=I001,E402"]
+      additional_dependencies: [ruff]

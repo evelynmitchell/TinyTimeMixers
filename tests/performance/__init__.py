@@ -1,1 +1,1 @@
-""" performance tests for the Tiny Time Mixers """
+"""performance tests for the Tiny Time Mixers"""

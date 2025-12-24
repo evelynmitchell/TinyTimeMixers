@@ -1,3 +1,1 @@
-""" Tiny Time Mixers tests """
-
-from tinytimemixers import TinyTimeMixers
+"""Tiny Time Mixers tests"""
