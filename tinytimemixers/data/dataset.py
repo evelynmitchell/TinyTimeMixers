@@ -79,8 +79,8 @@ class TimeSeriesDataset(Dataset):
 
         # Extract window
         series = self.data[series_idx]
-        context = series[:, start : start + self.context_length]
-        target = series[:, start + self.context_length : start + self.window_size]
+        context = series[:, start: start + self.context_length]
+        target = series[:, start + self.context_length: start + self.window_size]
 
         return context, target
 
@@ -173,9 +173,9 @@ class TimeSeriesIterableDataset(IterableDataset):
 
             # Generate windows for this series
             for start in range(0, seq_len - self.window_size + 1, self.stride):
-                context = series[:, start : start + self.context_length]
+                context = series[:, start: start + self.context_length]
                 target = series[
-                    :, start + self.context_length : start + self.window_size
+                    :, start + self.context_length: start + self.window_size
                 ]
                 yield context, target
 

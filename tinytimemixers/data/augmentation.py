@@ -202,7 +202,7 @@ def window_slice(
         return data
 
     start = np.random.randint(0, seq_len - target_len)
-    return data[..., start : start + target_len]
+    return data[..., start: start + target_len]
 
 
 class TimeSeriesAugmenter:
