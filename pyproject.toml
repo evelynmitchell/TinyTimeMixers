@@ -97,3 +97,12 @@ target-version = ['py310', 'py311', 'py312']
 testpaths = ["tests"]
 python_files = "test_*.py"
 addopts = "-v --tb=short"
+
+# UV configuration for CPU-only PyTorch (saves ~5GB disk space)
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
