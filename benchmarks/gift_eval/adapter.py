@@ -108,7 +108,7 @@ class TTMGluonTSPredictor(RepresentablePredictor):
         entries = list(dataset)
 
         for i in range(0, len(entries), self.batch_size):
-            batch_entries = entries[i : i + self.batch_size]
+            batch_entries = entries[i: i + self.batch_size]
 
             # Prepare batch contexts
             contexts = []
@@ -172,7 +172,7 @@ class TTMGluonTSPredictor(RepresentablePredictor):
 
         if seq_len >= self.context_length:
             # Truncate to context length (take last context_length values)
-            context = target[:, -self.context_length :]
+            context = target[:, -self.context_length:]
         else:
             # Pad with zeros at the beginning
             padding = np.zeros((num_channels, self.context_length - seq_len))
@@ -292,7 +292,7 @@ class TTMZeroShotPredictor(TTMGluonTSPredictor):
         entries = list(dataset)
 
         for i in range(0, len(entries), self.batch_size):
-            batch_entries = entries[i : i + self.batch_size]
+            batch_entries = entries[i: i + self.batch_size]
 
             contexts = []
             start_dates = []
@@ -427,10 +427,10 @@ class TTMFewShotPredictor(TTMGluonTSPredictor):
 
             if seq_len >= total_len:
                 for start in range(0, seq_len - total_len + 1, self.prediction_length):
-                    context = target[:, start : start + self.context_length]
+                    context = target[:, start: start + self.context_length]
                     tgt = target[
                         :,
-                        start + self.context_length : start
+                        start + self.context_length: start
                         + self.context_length
                         + self.prediction_length,
                     ]
@@ -457,7 +457,7 @@ class TTMFewShotPredictor(TTMGluonTSPredictor):
         for _ in range(num_epochs):
             np.random.shuffle(indices)
             for start_idx in range(0, dataset_size, self.batch_size):
-                batch_indices = indices[start_idx : start_idx + self.batch_size]
+                batch_indices = indices[start_idx: start_idx + self.batch_size]
                 batch_context = train_contexts[batch_indices].to(self.device)
                 batch_target = train_targets[batch_indices].to(self.device)
 
