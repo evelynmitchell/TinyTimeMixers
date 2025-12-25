@@ -10,8 +10,11 @@ resolution-markers = [
 
 [manifest.dependency-groups]
 benchmark = [
+    { name = "datasets", specifier = ">=2.16.0" },
+    { name = "gluonts", specifier = ">=0.14.0" },
+    { name = "huggingface-hub", specifier = ">=0.20.0" },
+    { name = "pandas", specifier = ">=2.1.0" },
     { name = "scipy", specifier = ">=1.11.0" },
-    { name = "tabpfn-time-series", specifier = ">=1.0.0" },
 ]
 core = [
     { name = "einops", specifier = ">=0.7.0" },
@@ -32,6 +35,7 @@ dev = [
     { name = "ty", specifier = ">=0.0.1a1" },
     { name = "zizmor", specifier = ">=1.0.0" },
 ]
+tabpfn = [{ name = "tabpfn-time-series", specifier = ">=1.0.0" }]
 
 [[package]]
 name = "aiohappyeyeballs"

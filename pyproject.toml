@@ -60,8 +60,15 @@ data = [
     "gluonts>=0.14.0",
 ]
 benchmark = [
-    "tabpfn-time-series>=1.0.0",
     "scipy>=1.11.0",
+    "gluonts>=0.14.0",
+    "datasets>=2.16.0",
+    "huggingface-hub>=0.20.0",
+    "pandas>=2.1.0",
+]
+# Separate optional group for TabPFN comparison (requires API key)
+tabpfn = [
+    "tabpfn-time-series>=1.0.0",
 ]
 
 [tool.poetry.group.lint.dependencies]

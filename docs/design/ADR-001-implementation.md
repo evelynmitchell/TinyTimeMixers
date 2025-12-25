@@ -1,6 +1,6 @@
 # ADR-001: TinyTimeMixers Implementation
 
-**Status:** Proposed
+**Status:** Implemented
 **Date:** 2024-12-24
 **Authors:** Claude Code session
 
