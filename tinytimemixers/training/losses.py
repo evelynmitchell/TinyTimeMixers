@@ -227,7 +227,7 @@ class MASELoss(ForecastLoss):
         if context is not None:
             # Naive forecast error: |y_t - y_{t-seasonality}|
             naive_errors = torch.abs(
-                context[..., self.seasonality :] - context[..., : -self.seasonality]
+                context[..., self.seasonality:] - context[..., : -self.seasonality]
             )
             scale = naive_errors.mean(dim=-1, keepdim=True) + self.eps
             mae = mae / scale
