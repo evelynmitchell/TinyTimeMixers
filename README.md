@@ -1,68 +1,193 @@
+# TinyTimeMixers
 
+A lightweight time series foundation model implementation in PyTorch, based on the TTM paper ([arXiv 2401.03955](https://arxiv.org/abs/2401.03955)).
 
-# Python Package Template
-A easy, reliable, fluid template for python packages complete with docs, testing suites, readme's, github workflows, linting and much much more
+## Features
 
+- **TSMixer Architecture**: Multi-level backbone with time, feature, and channel mixing
+- **Adaptive Patching**: Resolution-aware patch extraction
+- **RevIN Normalization**: Reversible instance normalization for domain adaptation
+- **Zero-Shot & Few-Shot**: Pre-trained model with optional head fine-tuning
+- **GIFT-Eval Benchmark**: Integration with 98 dataset configurations across 7 domains
+- **TabPFN-TS Comparison**: Head-to-head comparison with statistical testing
 
 ## Installation
 
-You can install the package using pip
-
 ```bash
+# Clone repository
+git clone https://github.com/evelynmitchell/TinyTimeMixers
+cd TinyTimeMixers
+
+# Install with uv (recommended)
+uv sync --all-groups
+
+# Or with pip
 pip install -e .
 ```
 
-# Usage
+### Optional Dependencies
+
+```bash
+# Benchmark dependencies (GIFT-Eval)
+uv sync --group benchmark
+
+# TabPFN comparison (requires API key)
+uv sync --group tabpfn
+```
+
+## Quick Start
+
+### Basic Forecasting
+
 ```python
-print("hello world")
+from tinytimemixers import TTM, TTMConfig
+import torch
 
+# Create model
+config = TTMConfig(
+    context_length=512,
+    prediction_length=96,
+    num_channels=1,
+)
+model = TTM(config)
+
+# Make prediction
+context = torch.randn(1, 1, 512)  # (batch, channels, context_length)
+forecast = model(context)  # (batch, channels, prediction_length)
 ```
 
+### Zero-Shot Evaluation
 
+```python
+from tinytimemixers.evaluation import ZeroShotForecaster
+from tinytimemixers.data import TimeSeriesDataset
 
-### Code Quality 🧹
+# Load pre-trained model
+model = TTM.load("models/ttm.pt")
+forecaster = ZeroShotForecaster(model)
 
-We provide two handy commands inside the `Makefile`, namely:
-
-- `make style` to format the code
-- `make check_code_quality` to check code quality (PEP8 basically)
-- `black .`
-- `ruff . --fix`
-
-### Tests 🧪
-
-[`pytests`](https://docs.pytest.org/en/7.1.x/) is used to run our tests.
-
-### Publish on PyPi 🚀
-
-**Important**: Before publishing, edit `__version__` in [src/__init__](/src/__init__.py) to match the wanted new version.
-
-```
-poetry build
-poetry publish
+# Evaluate on dataset
+dataset = TimeSeriesDataset(data, context_length=512, prediction_length=96)
+metrics = forecaster.evaluate(dataset, seasonality=24)
+print(f"MSE: {metrics['MSE']:.4f}, MAE: {metrics['MAE']:.4f}")
 ```
 
-### CI/CD 🤖
+### Training
 
-We use [GitHub actions](https://github.com/features/actions) to automatically run tests and check code quality when a new PR is done on `main`.
+```python
+from tinytimemixers.training import Trainer, TrainingConfig
 
-On any pull request, we will check the code quality and tests.
+config = TrainingConfig(
+    learning_rate=1e-4,
+    num_epochs=100,
+    batch_size=64,
+)
 
-When a new release is created, we will try to push the new code to PyPi. We use [`twine`](https://twine.readthedocs.io/en/stable/) to make our life easier. 
+trainer = Trainer(model, train_loader, val_loader, config)
+metrics = trainer.train()
+```
 
-The **correct steps** to create a new realease are the following:
-- edit `__version__` in [src/__init__](/src/__init__.py) to match the wanted new version.
-- create a new [`tag`](https://git-scm.com/docs/git-tag) with the release name, e.g. `git tag v0.0.1 && git push origin v0.0.1` or from the GitHub UI.
-- create a new release from GitHub UI
+## Benchmarking
 
-The CI will run when you create the new release.
+### Run GIFT-Eval Benchmark
 
-# Docs
-We use MK docs. This repo comes with the zeta docs. All the docs configurations are already here along with the readthedocs configs.
+```bash
+# Run on all datasets
+python scripts/benchmark_gift.py --model-path models/ttm.pt
 
+# Run on specific domains
+python scripts/benchmark_gift.py --model-path models/ttm.pt --domains Energy Web
 
-# Tests
-`pytest`
+# Resume interrupted run
+python scripts/benchmark_gift.py --model-path models/ttm.pt --resume
 
-# License
+# List available datasets
+python scripts/benchmark_gift.py --list-datasets
+```
+
+### Compare with TabPFN-TS
+
+```bash
+python scripts/compare_tabpfn.py --ttm-path models/ttm.pt
+```
+
+See [docs/benchmarking.md](docs/benchmarking.md) for detailed benchmarking guide.
+
+## Model Architecture
+
+```
+TTM
+├── RevIN (Reversible Instance Normalization)
+├── Patch Embedding (64 → 192 features)
+├── Backbone (L=6 levels)
+│   └── TSMixer Blocks (M=2 per level)
+│       ├── Time Mixing MLP
+│       ├── Feature Mixing MLP
+│       └── Channel Mixing MLP
+├── Decoder (2 layers)
+└── Forecast Head (Linear projection)
+```
+
+**Model Stats:**
+- Parameters: ~2.2M
+- Context Length: 512
+- Prediction Length: 96 (configurable)
+
+## Project Structure
+
+```
+tinytimemixers/
+├── config.py           # TTMConfig, TrainingConfig
+├── layers/             # RevIN, TSMixer blocks, patching
+├── models/             # TTM, backbone, decoder, forecast head
+├── training/           # Trainer, losses, optimizers
+├── evaluation/         # Metrics, forecasters
+├── data/               # Dataset, preprocessing, augmentation
+└── utils/              # Checkpointing, device management
+
+benchmarks/
+├── gift_eval/          # GIFT-Eval benchmark integration
+└── tabpfn_comparison/  # TabPFN-TS comparison
+
+scripts/
+├── benchmark_gift.py   # Run GIFT-Eval benchmark
+└── compare_tabpfn.py   # Compare with TabPFN-TS
+```
+
+## Testing
+
+```bash
+# Run all tests
+uv run pytest tests/ -v
+
+# Run specific test suite
+uv run pytest tests/unit/test_ttm.py -v
+uv run pytest tests/unit/test_benchmarks.py -v
+```
+
+## Development
+
+```bash
+# Install dev dependencies
+uv sync --group dev
+
+# Run linting
+ruff check .
+
+# Run formatting
+ruff format .
+
+# Run pre-commit hooks
+pre-commit run --all-files
+```
+
+## References
+
+- [TTM Paper (arXiv 2401.03955)](https://arxiv.org/abs/2401.03955)
+- [TSMixer Paper (arXiv 2303.06053)](https://arxiv.org/abs/2303.06053)
+- [GIFT-Eval Benchmark](https://github.com/SalesforceAIResearch/gift-eval)
+- [TabPFN-TS](https://github.com/PriorLabs/tabpfn-time-series)
+
+## License
+
 MIT
