@@ -34,7 +34,7 @@ classifiers = [
 python = "^3.10"
 torch = "^2.1.0"
 numpy = "^1.26.0"
-einops = "^0.7.0"
+einops = "^0.8.1"
 tqdm = "^4.66.0"
 
 [tool.poetry.dev-dependencies]
